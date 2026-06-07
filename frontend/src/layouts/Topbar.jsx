@@ -1,9 +1,23 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Icon, SearchBar } from "../components"
+import { logout } from "../services/authService"
 
 export function Topbar({ onMenu }) {
+  const navigate = useNavigate()
   const [query, setQuery] = useState("")
   const [profileOpen, setProfileOpen] = useState(false)
+
+  function goToSettings() {
+    setProfileOpen(false)
+    navigate("/settings")
+  }
+
+  function handleLogout() {
+    logout()
+    setProfileOpen(false)
+    navigate("/login")
+  }
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-slate-200 bg-white/95 px-4 backdrop-blur lg:px-6">
@@ -29,9 +43,15 @@ export function Topbar({ onMenu }) {
           </button>
           {profileOpen && (
             <div className="absolute right-0 mt-2 w-48 rounded-lg border border-slate-200 bg-white p-2 shadow-lg">
-              <button className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50">Profile</button>
-              <button className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50">Account settings</button>
-              <button className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50">Logout</button>
+              <button className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50" onClick={goToSettings}>
+                Profile
+              </button>
+              <button className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50" onClick={goToSettings}>
+                Account settings
+              </button>
+              <button className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           )}
         </div>
